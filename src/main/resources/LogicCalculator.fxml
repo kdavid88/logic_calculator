@@ -99,7 +99,7 @@
             <Button layoutX="635.0" layoutY="311.0" mnemonicParsing="false" onAction="#makeConjunction" text="∧" />
             <Button layoutX="586.0" layoutY="311.0" mnemonicParsing="false" onAction="#makeDisjunction" text="∨" />
             <Button layoutX="634.0" layoutY="267.0" mnemonicParsing="false" onAction="#makeNegation" text="¬" />
-            <Label fx:id="resultLabel" layoutX="544.0" layoutY="516.0" prefHeight="16.0" prefWidth="154.0" />
+            <Label fx:id="resultLabel" layoutX="544.0" layoutY="516.0" prefHeight="16.0" prefWidth="203.0" />
             <Button layoutX="453.0" layoutY="512.0" mnemonicParsing="false" onAction="#calculateResult" text="Calculate" />
             <TableView fx:id="tableView" editable="true" layoutX="14.0" layoutY="197.0" prefHeight="339.0" prefWidth="125.0">
               <columns>

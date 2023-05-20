@@ -32,18 +32,18 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogicCalculatorController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -84,19 +84,17 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-      <children>
-        <Label alignment="CENTER" layoutX="155.0" layoutY="177.0" style="&#10;" text="Drag components from Library here…" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
-          <font>
-            <Font size="18.0" />
-          </font>
-        </Label>
-            <TableView layoutX="74.0" layoutY="52.0" prefHeight="220.0" prefWidth="251.0">
-              <columns>
-                <TableColumn fx:id="formulasTable" prefWidth="203.0" resizable="false" text="Formulák" />
-              </columns>
-            </TableView>
-      </children>
-    </AnchorPane>
+      <Pane prefHeight="573.0" prefWidth="800.0">
+         <children>
+            <ListView fx:id="formulaList" layoutX="51.0" layoutY="187.0" prefHeight="313.0" prefWidth="256.0" />
+            <Button layoutX="369.0" layoutY="187.0" mnemonicParsing="false" onAction="#formulaToLEft" prefHeight="24.0" prefWidth="140.0" text="Add Left formula" />
+            <Label fx:id="leftFormulaLabel" layoutX="369.0" layoutY="235.0" text="left formula" />
+            <Button layoutX="51.0" layoutY="43.0" mnemonicParsing="false" onAction="#addNewVariable" text="Add variable" />
+            <TextField fx:id="newVariable" layoutX="179.0" layoutY="43.0" prefHeight="24.0" prefWidth="52.0" />
+            <Button layoutX="369.0" layoutY="275.0" mnemonicParsing="false" onAction="#formulaToRight" prefHeight="24.0" prefWidth="140.0" text="Add Right formula" />
+            <Label fx:id="righFormulaLabel" layoutX="369.0" layoutY="328.0" text="right formula" />
+         </children>
+      </Pane>
+      <Label fx:id="leftFormulaLabel1" text="left formula" />
   </children>
 </VBox>

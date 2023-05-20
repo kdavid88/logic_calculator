@@ -9,7 +9,8 @@ public class LogicVariable extends LogicFormula{
 
     public LogicVariable(String name)
     {
-        super();
-        this.symbol = name;
+        super(name);
+        // default value of variables is false;
+        this.setCurrentValue(false);
     }
 }

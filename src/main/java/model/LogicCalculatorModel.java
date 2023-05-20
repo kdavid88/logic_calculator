@@ -2,7 +2,7 @@ package model;
 import java.util.Vector;
 
 public class LogicCalculatorModel {
-    // private illene de egyszerubb igy
+    // maybe should be private?
     public Vector<LogicFormula> Formulas = new Vector<LogicFormula>();
 
 }

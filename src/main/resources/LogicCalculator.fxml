@@ -39,6 +39,8 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -86,15 +88,26 @@
     </MenuBar>
       <Pane prefHeight="573.0" prefWidth="800.0">
          <children>
-            <ListView fx:id="formulaList" layoutX="51.0" layoutY="187.0" prefHeight="313.0" prefWidth="256.0" />
-            <Button layoutX="369.0" layoutY="187.0" mnemonicParsing="false" onAction="#formulaToLEft" prefHeight="24.0" prefWidth="140.0" text="Add Left formula" />
-            <Label fx:id="leftFormulaLabel" layoutX="369.0" layoutY="235.0" text="left formula" />
-            <Button layoutX="51.0" layoutY="43.0" mnemonicParsing="false" onAction="#addNewVariable" text="Add variable" />
-            <TextField fx:id="newVariable" layoutX="179.0" layoutY="43.0" prefHeight="24.0" prefWidth="52.0" />
-            <Button layoutX="369.0" layoutY="275.0" mnemonicParsing="false" onAction="#formulaToRight" prefHeight="24.0" prefWidth="140.0" text="Add Right formula" />
-            <Label fx:id="righFormulaLabel" layoutX="369.0" layoutY="328.0" text="right formula" />
+            <ListView fx:id="formulaList" layoutX="158.0" layoutY="223.0" onMouseClicked="#selectFormula" prefHeight="313.0" prefWidth="256.0" />
+            <Button layoutX="423.0" layoutY="267.0" mnemonicParsing="false" onAction="#formulaToLEft" prefHeight="24.0" prefWidth="140.0" text="Add Left formula" />
+            <Label fx:id="leftFormulaLabel" layoutX="692.0" layoutY="271.0" text="left formula" />
+            <Button layoutX="158.0" layoutY="179.0" mnemonicParsing="false" onAction="#addNewVariable" text="Add variable" />
+            <TextField fx:id="newVariable" layoutX="286.0" layoutY="179.0" prefHeight="24.0" prefWidth="52.0" />
+            <Button layoutX="423.0" layoutY="360.0" mnemonicParsing="false" onAction="#formulaToRight" prefHeight="24.0" prefWidth="140.0" text="Add Right formula" />
+            <Label fx:id="righFormulaLabel" layoutX="692.0" layoutY="364.0" text="right formula" />
+            <Label layoutX="576.0" layoutY="223.0" text="Select operation" />
+            <Button layoutX="635.0" layoutY="311.0" mnemonicParsing="false" onAction="#makeConjunction" text="∧" />
+            <Button layoutX="586.0" layoutY="311.0" mnemonicParsing="false" onAction="#makeDisjunction" text="∨" />
+            <Button layoutX="634.0" layoutY="267.0" mnemonicParsing="false" onAction="#makeNegation" text="¬" />
+            <Label fx:id="resultLabel" layoutX="544.0" layoutY="516.0" prefHeight="16.0" prefWidth="154.0" />
+            <Button layoutX="453.0" layoutY="512.0" mnemonicParsing="false" onAction="#calculateResult" text="Calculate" />
+            <TableView fx:id="tableView" editable="true" layoutX="14.0" layoutY="197.0" prefHeight="339.0" prefWidth="125.0">
+              <columns>
+                <TableColumn fx:id="nameColumn" prefWidth="56.0" text="var" />
+                <TableColumn fx:id="valueColumn" onEditCommit="#changeVarEvent" prefWidth="70.0" text="value" />
+              </columns>
+            </TableView>
          </children>
       </Pane>
-      <Label fx:id="leftFormulaLabel1" text="left formula" />
   </children>
 </VBox>

@@ -13,4 +13,9 @@ public class LogicVariable extends LogicFormula{
         // default value of variables is false;
         this.setCurrentValue(false);
     }
+
+    public LogicVariable() {
+        super();
+    }
+
 }

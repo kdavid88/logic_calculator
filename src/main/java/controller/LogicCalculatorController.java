@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -13,6 +14,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import jdk.dynalink.CallSiteDescriptor;
 import model.*;
+
+import java.io.IOException;
 
 
 public class LogicCalculatorController {
@@ -87,7 +90,8 @@ public class LogicCalculatorController {
 
      }
 
-     // to add: exceptin handling for empty subformulas.
+     // todo: exception handling for empty subformulas.
+     // toto: maybe put these into interface?
      public void makeConjunction(){
           LogicFormula toAdd = new LogicConjunction(model.Formulas.get(leftIndex),model.Formulas.get(rightIndex));
           model.Formulas.add(toAdd);
@@ -111,7 +115,7 @@ public class LogicCalculatorController {
           lastSelected = formulaList.getSelectionModel().getSelectedIndex();
      }
 
-     public void calculateResult(){
+     public void calculateResult() {
           String answer = "no formula selected yet";
           if (lastSelected != -1)
                answer = String.valueOf(model.Formulas.get(lastSelected).evaluate());
@@ -138,5 +142,7 @@ public class LogicCalculatorController {
           formulaListReset();
 
      }
+
+
 
 }

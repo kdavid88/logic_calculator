@@ -15,4 +15,8 @@ public class LogicConjunction extends LogicFormula{
     public String toString() {
         return '(' + super.toString() + ')';
     }
+
+    public LogicConjunction() {
+        super();
+    }
 }

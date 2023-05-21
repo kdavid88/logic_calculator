@@ -11,4 +11,9 @@ public class LogicNegation extends LogicFormula{
         return !rightSubFormula.evaluate();
     }
 
+    public LogicNegation() {
+        super();
+    }
+
+
 }

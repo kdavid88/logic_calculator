@@ -19,14 +19,30 @@ import java.io.IOException;
 
 
 public class LogicCalculatorController {
-     LogicCalculatorModel model;
+     private final LogicCalculatorModel model = new LogicCalculatorModel();
+     private int lastSelected ;
      private int leftIndex, rightIndex;
+     private boolean leftAdded = false , rightAdded = false;
+     private void activateOperations()
+     {
+          if (leftAdded) {
+               makeNegButton.setDisable(false);
+               if (rightAdded){
+                    makeDisjButton.setDisable(false);
+                    makeConjButton.setDisable(false);
+               }
+          }
+     }
+
      @FXML
      private ListView formulaList;
      @FXML
      private Label leftFormulaLabel, righFormulaLabel, resultLabel;
      @FXML
      private TextField newVariable;
+
+     @FXML
+     Button calculateButton, addLeftFormulaButton, addRightFormulaButton, makeNegButton, makeDisjButton, makeConjButton;
 
      @FXML
      private TableView<variableData> tableView;
@@ -37,47 +53,65 @@ public class LogicCalculatorController {
 
      private ObservableList<variableData> variablesToTable = FXCollections.observableArrayList();
 
-     int lastSelected = -1;
 
      @FXML
-     public void initialize(){
-          model = new LogicCalculatorModel();
+     public void initialize() {
+          calculateButton.setDisable(true);
+          addLeftFormulaButton.setDisable(true);
+          addRightFormulaButton.setDisable(true);
+          makeNegButton.setDisable(true);
+          makeConjButton.setDisable(true);
+          makeDisjButton.setDisable(true);
           nameColumn.setCellValueFactory(new PropertyValueFactory<variableData,String>("name"));
           valueColumn.setCellValueFactory(new PropertyValueFactory<variableData,String>("value"));
           tableView.setItems(variablesToTable);
           tableView.setEditable(true);
           valueColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+          //model.read();
+     }
+     public void selectFormula(){
+          calculateButton.setDisable(false);
+          addLeftFormulaButton.setDisable(false);
+          addRightFormulaButton.setDisable(false);
+          lastSelected = formulaList.getSelectionModel().getSelectedIndex();
+     }
 
-
-
-
+     public void calculateResult() {
+          String answer = String.valueOf(model.getFormula(lastSelected).evaluate());
+          resultLabel.setText(answer);
+          //model.toJsonTest();
      }
 
      public void formulaToLEft(){
           String leftFormula = formulaList.getSelectionModel().getSelectedItem().toString();
           leftFormulaLabel.setText(leftFormula);
           leftIndex = formulaList.getSelectionModel().getSelectedIndex();
+          leftAdded = true;
+          activateOperations();
      }
      public void formulaToRight(){
           String rightFormula = formulaList.getSelectionModel().getSelectedItem().toString();
           righFormulaLabel.setText(rightFormula);
           rightIndex = formulaList.getSelectionModel().getSelectedIndex();
+          rightAdded = true;
+          activateOperations();
+
      }
 
      public void addNewVariable(){
           String newVariableName = newVariable.getText();
-          model.Formulas.add(new LogicVariable(newVariableName));
+          model.addFormula(new LogicVariable(newVariableName));
           formulaListReset();
           newVariable.clear();
      }
 
      private void formulaListReset(){
           formulaList.getItems().clear();
-          formulaList.getItems().setAll(model.Formulas);
+          formulaList.getItems().setAll(model.getFormulas());
 
           variablesToTable.clear();
           int index = 0;
-          for (LogicFormula form : model.Formulas)
+          for (LogicFormula form : model.getFormulas())
           {
                if (form.getClass() == LogicVariable.class)
                {
@@ -93,34 +127,25 @@ public class LogicCalculatorController {
      // todo: exception handling for empty subformulas.
      // toto: maybe put these into interface?
      public void makeConjunction(){
-          LogicFormula toAdd = new LogicConjunction(model.Formulas.get(leftIndex),model.Formulas.get(rightIndex));
-          model.Formulas.add(toAdd);
+          LogicFormula toAdd = new LogicConjunction(model.getFormula(leftIndex),model.getFormula(rightIndex));
+          model.addFormula(toAdd);
           formulaListReset();
      }
 
      public void makeDisjunction(){
-          LogicFormula toAdd = new LogicDisjunction(model.Formulas.get(leftIndex),model.Formulas.get(rightIndex));
-          model.Formulas.add(toAdd);
+          LogicFormula toAdd = new LogicDisjunction(model.getFormula(leftIndex),model.getFormula(rightIndex));
+          model.addFormula(toAdd);
           formulaListReset();
      }
 
 
      public void makeNegation(){
-          LogicFormula toAdd = new LogicNegation(model.Formulas.get(leftIndex));
-          model.Formulas.add(toAdd);
+          LogicFormula toAdd = new LogicNegation(model.getFormula(leftIndex));
+          model.addFormula(toAdd);
           formulaListReset();
      }
 
-     public void selectFormula(){
-          lastSelected = formulaList.getSelectionModel().getSelectedIndex();
-     }
 
-     public void calculateResult() {
-          String answer = "no formula selected yet";
-          if (lastSelected != -1)
-               answer = String.valueOf(model.Formulas.get(lastSelected).evaluate());
-          resultLabel.setText(answer);
-     }
 
      // a tableview frissíteset ki lehet venni, mert ugy is reseteljuk
      public void changeVarEvent(TableColumn.CellEditEvent editedCell){
@@ -137,7 +162,7 @@ public class LogicCalculatorController {
                newValueString = "1";
           }
           //varSelected.setValue(newValueString);
-          model.Formulas.get(index).setCurrentValue(newValue);
+          model.getFormula(index).setCurrentValue(newValue);
           tableView.refresh();
           formulaListReset();
 

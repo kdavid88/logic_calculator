@@ -89,18 +89,18 @@
       <Pane prefHeight="573.0" prefWidth="800.0">
          <children>
             <ListView fx:id="formulaList" layoutX="158.0" layoutY="223.0" onMouseClicked="#selectFormula" prefHeight="313.0" prefWidth="256.0" />
-            <Button layoutX="423.0" layoutY="267.0" mnemonicParsing="false" onAction="#formulaToLEft" prefHeight="24.0" prefWidth="140.0" text="Add Left formula" />
+            <Button fx:id="addLeftFormulaButton" layoutX="423.0" layoutY="267.0" mnemonicParsing="false" onAction="#formulaToLEft" prefHeight="24.0" prefWidth="140.0" text="Add Left formula" />
             <Label fx:id="leftFormulaLabel" layoutX="692.0" layoutY="271.0" text="left formula" />
             <Button layoutX="158.0" layoutY="179.0" mnemonicParsing="false" onAction="#addNewVariable" text="Add variable" />
             <TextField fx:id="newVariable" layoutX="286.0" layoutY="179.0" prefHeight="24.0" prefWidth="52.0" />
-            <Button layoutX="423.0" layoutY="360.0" mnemonicParsing="false" onAction="#formulaToRight" prefHeight="24.0" prefWidth="140.0" text="Add Right formula" />
+            <Button fx:id="addRightFormulaButton" layoutX="423.0" layoutY="360.0" mnemonicParsing="false" onAction="#formulaToRight" prefHeight="24.0" prefWidth="140.0" text="Add Right formula" />
             <Label fx:id="righFormulaLabel" layoutX="692.0" layoutY="364.0" text="right formula" />
             <Label layoutX="576.0" layoutY="223.0" text="Select operation" />
-            <Button layoutX="635.0" layoutY="311.0" mnemonicParsing="false" onAction="#makeConjunction" text="∧" />
-            <Button layoutX="586.0" layoutY="311.0" mnemonicParsing="false" onAction="#makeDisjunction" text="∨" />
-            <Button layoutX="634.0" layoutY="267.0" mnemonicParsing="false" onAction="#makeNegation" text="¬" />
+            <Button fx:id="makeConjButton" layoutX="635.0" layoutY="311.0" mnemonicParsing="false" onAction="#makeConjunction" text="∧" />
+            <Button fx:id="makeDisjButton" layoutX="586.0" layoutY="311.0" mnemonicParsing="false" onAction="#makeDisjunction" text="∨" />
+            <Button fx:id="makeNegButton" layoutX="634.0" layoutY="267.0" mnemonicParsing="false" onAction="#makeNegation" text="¬" />
             <Label fx:id="resultLabel" layoutX="544.0" layoutY="516.0" prefHeight="16.0" prefWidth="203.0" />
-            <Button layoutX="453.0" layoutY="512.0" mnemonicParsing="false" onAction="#calculateResult" text="Calculate" />
+            <Button fx:id="calculateButton" layoutX="453.0" layoutY="512.0" mnemonicParsing="false" onAction="#calculateResult" text="Calculate" />
             <TableView fx:id="tableView" editable="true" layoutX="14.0" layoutY="197.0" prefHeight="339.0" prefWidth="125.0">
               <columns>
                 <TableColumn fx:id="nameColumn" prefWidth="56.0" text="var" />

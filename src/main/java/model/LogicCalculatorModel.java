@@ -3,6 +3,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
+import java.text.Normalizer;
 import java.util.Arrays;
 //import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 //import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
@@ -21,13 +23,16 @@ public class LogicCalculatorModel {
     ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
     public void toJsonTest() throws IOException {
-
+        //Could make type annotation work with Vector, had to convert to array
+        LogicFormula[] formulasToSave = new LogicFormula[Formulas.size()];
+        Formulas.toArray(formulasToSave);
         try (var writer = new FileWriter("filename.json")) {
-            objectMapper.writeValue(writer, Formulas);
+            objectMapper.writeValue(writer, formulasToSave);
         }
     }
 
     public void read() throws IOException {
+
         LogicFormula[] formulasRead = objectMapper.readValue(new FileReader("filename.json"), LogicFormula[].class);
         Formulas = new Vector<LogicFormula>(Arrays.asList(formulasRead));
     }

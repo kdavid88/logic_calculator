@@ -20,9 +20,14 @@ import java.io.IOException;
 
 public class LogicCalculatorController {
      private final LogicCalculatorModel model = new LogicCalculatorModel();
+
+     // Maybe replace with references?
      private int lastSelected ;
+
      private int leftIndex, rightIndex;
      private boolean leftAdded = false , rightAdded = false;
+
+     // Probably would be better with listeners but it gets the job done.
      private void activateOperations()
      {
           if (leftAdded) {
@@ -55,19 +60,23 @@ public class LogicCalculatorController {
 
 
      @FXML
-     public void initialize() {
+     public void initialize() throws IOException {
+          // Disabling buttons
           calculateButton.setDisable(true);
           addLeftFormulaButton.setDisable(true);
           addRightFormulaButton.setDisable(true);
           makeNegButton.setDisable(true);
           makeConjButton.setDisable(true);
           makeDisjButton.setDisable(true);
+
+          //Setting up table for variables
           nameColumn.setCellValueFactory(new PropertyValueFactory<variableData,String>("name"));
           valueColumn.setCellValueFactory(new PropertyValueFactory<variableData,String>("value"));
           tableView.setItems(variablesToTable);
           tableView.setEditable(true);
           valueColumn.setCellFactory(TextFieldTableCell.forTableColumn());
           //model.read();
+          formulaListReset();
      }
      public void selectFormula(){
           calculateButton.setDisable(false);
@@ -147,22 +156,23 @@ public class LogicCalculatorController {
 
 
 
-     // a tableview frissíteset ki lehet venni, mert ugy is reseteljuk
+     // Commented lines would refresh tableview, but we relaod it from Formulas
      public void changeVarEvent(TableColumn.CellEditEvent editedCell){
           variableData varSelected = tableView.getSelectionModel().getSelectedItem();
-          int index = editedCell.getTablePosition().getRow();
+          //int index = editedCell.getTablePosition().getRow();
           Boolean newValue;
-          String newValueString;
+          //String newValueString;
           if (editedCell.getNewValue().toString().equals("0")){
                newValue = false;
-               newValueString = "0";
+               //newValueString = "0";
           }
           else {
                newValue = true;
-               newValueString = "1";
+               //newValueString = "1";
           }
+
           //varSelected.setValue(newValueString);
-          model.getFormula(index).setCurrentValue(newValue);
+          model.getFormula(varSelected.index).setCurrentValue(newValue);
           tableView.refresh();
           formulaListReset();
 

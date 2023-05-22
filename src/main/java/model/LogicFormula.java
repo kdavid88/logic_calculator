@@ -3,7 +3,8 @@ package model;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 // todo something breaks when serialazed as array
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "className")
+//@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "className")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public abstract class LogicFormula {
 
     protected LogicFormula leftSubFormula, rightSubFormula;

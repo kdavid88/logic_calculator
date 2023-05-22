@@ -8,13 +8,16 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableStringValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.FileChooser;
 import jdk.dynalink.CallSiteDescriptor;
 import model.*;
 
+import java.io.File;
 import java.io.IOException;
 
 
@@ -58,7 +61,6 @@ public class LogicCalculatorController {
 
      private ObservableList<variableData> variablesToTable = FXCollections.observableArrayList();
 
-
      @FXML
      public void initialize() throws IOException {
           // Disabling buttons
@@ -78,6 +80,22 @@ public class LogicCalculatorController {
           //model.read();
           formulaListReset();
      }
+
+     @FXML
+     private void onOpen(ActionEvent event) {
+          FileChooser fileChooser = new FileChooser();
+          fileChooser.setTitle("Open");
+          File file = fileChooser.showOpenDialog(null);
+          if (file != null) {
+               //Logger.debug("Opening file {}", file);
+               try {
+                    model.open(file.getPath());
+               } catch (IOException e) {
+                    //Logger.error("Failed to open file");
+               }
+          }
+     }
+
      public void selectFormula(){
           calculateButton.setDisable(false);
           addLeftFormulaButton.setDisable(false);
@@ -104,7 +122,6 @@ public class LogicCalculatorController {
           rightIndex = formulaList.getSelectionModel().getSelectedIndex();
           rightAdded = true;
           activateOperations();
-
      }
 
      public void addNewVariable(){
@@ -117,7 +134,6 @@ public class LogicCalculatorController {
      private void formulaListReset(){
           formulaList.getItems().clear();
           formulaList.getItems().setAll(model.getFormulas());
-
           variablesToTable.clear();
           int index = 0;
           for (LogicFormula form : model.getFormulas())
@@ -129,8 +145,6 @@ public class LogicCalculatorController {
                }
                index++;
           }
-
-
      }
 
      // todo: exception handling for empty subformulas.
@@ -147,14 +161,11 @@ public class LogicCalculatorController {
           formulaListReset();
      }
 
-
      public void makeNegation(){
           LogicFormula toAdd = new LogicNegation(model.getFormula(leftIndex));
           model.addFormula(toAdd);
           formulaListReset();
      }
-
-
 
      // Commented lines would refresh tableview, but we relaod it from Formulas
      public void changeVarEvent(TableColumn.CellEditEvent editedCell){
@@ -170,14 +181,9 @@ public class LogicCalculatorController {
                newValue = true;
                //newValueString = "1";
           }
-
           //varSelected.setValue(newValueString);
           model.getFormula(varSelected.index).setCurrentValue(newValue);
           tableView.refresh();
           formulaListReset();
-
      }
-
-
-
 }

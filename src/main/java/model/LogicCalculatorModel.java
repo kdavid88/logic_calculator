@@ -3,7 +3,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.Arrays;
 //import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
@@ -19,11 +23,36 @@ import java.util.Vector;
 public class LogicCalculatorModel {
     //  should be private?
     private Vector<LogicFormula> Formulas = new Vector<LogicFormula>();
-
     ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+    private final StringProperty filePath = new SimpleStringProperty(null);
+
+    public String getFilePath() {
+        return filePath.get();
+    }
+
+    public StringProperty filePathProperty() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath.set(filePath);
+    }
+// todo evaluation doesnt work on loadad compound formulas.
+    public void open(String filePath) throws IOException {
+        var s = Files.readString(Path.of(filePath));
+        this.filePath.set(filePath);
+        LogicFormula[] formulasRead = objectMapper.readValue(new FileReader(filePath), LogicFormula[].class);
+        Formulas.clear();
+        for (LogicFormula formula : formulasRead)
+        {
+            Formulas.add(formula);
+        }
+
+        //modified.set(false);
+    }
 
     public void toJsonTest() throws IOException {
-        //Could make type annotation work with Vector, had to convert to array
+        //Could not make type annotation work with Vector, had to convert to array
         LogicFormula[] formulasToSave = new LogicFormula[Formulas.size()];
         Formulas.toArray(formulasToSave);
         try (var writer = new FileWriter("filename.json")) {

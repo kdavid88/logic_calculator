@@ -17,7 +17,7 @@ import java.io.IOException;
 public class LogicCalculatorController {
      private final LogicCalculatorModel model = new LogicCalculatorModel();
 
-     // Maybe replace with references?
+     // Should these be in the model?
      private int lastSelected ;
 
      private int leftIndex, rightIndex;
@@ -40,11 +40,11 @@ public class LogicCalculatorController {
      @FXML
      private Label leftFormulaLabel, righFormulaLabel, resultLabel;
      @FXML
+     private MenuItem exportMenuItem;
+     @FXML
      private TextField newVariable;
-
      @FXML
      Button calculateButton, addLeftFormulaButton, addRightFormulaButton, makeNegButton, makeDisjButton, makeConjButton;
-
      @FXML
      private TableView<variableData> tableView;
      @FXML
@@ -63,6 +63,7 @@ public class LogicCalculatorController {
           makeNegButton.setDisable(true);
           makeConjButton.setDisable(true);
           makeDisjButton.setDisable(true);
+          exportMenuItem.setDisable(true);
 
           //Setting up table for variables
           nameColumn.setCellValueFactory(new PropertyValueFactory<variableData,String>("name"));
@@ -70,9 +71,6 @@ public class LogicCalculatorController {
           tableView.setItems(variablesToTable);
           tableView.setEditable(true);
           valueColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-          //model.read();
-
-          //formulaListReset();
      }
 
      //////   File handling
@@ -131,12 +129,29 @@ public class LogicCalculatorController {
                }
           }
      }
+
+     @FXML
+     private void onExport(){
+          FileChooser fileChooser = new FileChooser();
+          fileChooser.setTitle("Export Selected formula");
+          File file = fileChooser.showSaveDialog(null);
+          if (file != null) {
+               //Logger.debug("Saving file as {}", file);
+               try {
+                    model.export(file.getPath(),lastSelected);
+               } catch (IOException e) {
+                    //Logger.error(e, "Failed to save file");
+               }
+          }
+
+     }
      //////   Hangling formulas
      public void selectFormula(){
           calculateButton.setDisable(false);
           addLeftFormulaButton.setDisable(false);
           addRightFormulaButton.setDisable(false);
           lastSelected = formulaList.getSelectionModel().getSelectedIndex();
+          exportMenuItem.setDisable(false);
      }
 
 
@@ -144,8 +159,6 @@ public class LogicCalculatorController {
      public void calculateResult() throws IOException {
           String answer = String.valueOf(model.getFormula(lastSelected).evaluate());
           resultLabel.setText(answer);
-          //model.toJsonTest();
-          //model.saveLog();
      }
 
      public void formulaToLEft(){
@@ -167,7 +180,6 @@ public class LogicCalculatorController {
           String newVariableName = newVariable.getText();
           LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.VAR,0,0,newVariableName);
           model.addFormulaOfType(signature);
-          //model.addFormula(new LogicVariable(newVariableName));
           formulaListReset();
           newVariable.clear();
      }
@@ -207,6 +219,7 @@ public class LogicCalculatorController {
      }
 
      // Commented lines would refresh tableview, but we relaod it from Formulas
+     // Todo clean this up.
      public void changeVarEvent(TableColumn.CellEditEvent editedCell){
           variableData varSelected = tableView.getSelectionModel().getSelectedItem();
           //int index = editedCell.getTablePosition().getRow();

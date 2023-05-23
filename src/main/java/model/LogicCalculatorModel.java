@@ -54,7 +54,6 @@ public class LogicCalculatorModel {
     }
 
     public void saveAs(String filePath) throws IOException {
-        String toWrite = null;
         var writer = new FileWriter(filePath);
         objectMapper.writeValue(writer, Log);
         //Files.writeString(Path.of(filePath), content.get());
@@ -62,33 +61,22 @@ public class LogicCalculatorModel {
         //modified.set(false);
     }
 
-    public void toJsonTest() throws IOException {
-        //Could not make type annotation work with Vector, had to convert to array
-        LogicFormula[] formulasToSave = new LogicFormula[Formulas.size()];
-        Formulas.toArray(formulasToSave);
-        try (var writer = new FileWriter("filename.json")) {
-            objectMapper.writeValue(writer, formulasToSave);
-        }
+    // This exports a single formula with the entire tree.
+    public void export(String filePath, int index) throws IOException {
+        var writer = new FileWriter(filePath);
+        objectMapper.writeValue(writer, Formulas.get(index));
+        //This could expot the entire vector of formulas. Could not make type annotation work with Vector, had to convert to array
+        //LogicFormula[] formulasToSave = new LogicFormula[Formulas.size()];
+        //Formulas.toArray(formulasToSave);
     }
 
-    public void saveLog() throws IOException {
-        try (var writer = new FileWriter("log.json")) {
-            objectMapper.writeValue(writer, Log);
-        }
-    }
-
+    /*
+    // Could be used for reading back single formula from json, but it doesn't record interdependencies.
     public void read() throws IOException {
         LogicFormula[] formulasRead = objectMapper.readValue(new FileReader("filename.json"), LogicFormula[].class);
         Formulas = new Vector<LogicFormula>(Arrays.asList(formulasRead));
     }
-
-    public void readLog() throws IOException {
-        LogicFormulaSignature[] formulasRead = objectMapper.readValue(new FileReader("log.json"), LogicFormulaSignature[].class);
-        for (LogicFormulaSignature signature : formulasRead) {
-            addFormulaOfType(signature);
-        }
-    }
-
+    */
     public LogicFormula getFormula(int index){
         return Formulas.get(index);
     }

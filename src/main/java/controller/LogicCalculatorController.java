@@ -78,7 +78,9 @@ public class LogicCalculatorController {
           tableView.setEditable(true);
           valueColumn.setCellFactory(TextFieldTableCell.forTableColumn());
           //model.read();
+          model.readLog();
           formulaListReset();
+
      }
 
      @FXML
@@ -103,10 +105,11 @@ public class LogicCalculatorController {
           lastSelected = formulaList.getSelectionModel().getSelectedIndex();
      }
 
-     public void calculateResult() {
+     public void calculateResult() throws IOException {
           String answer = String.valueOf(model.getFormula(lastSelected).evaluate());
           resultLabel.setText(answer);
           //model.toJsonTest();
+          model.saveLog();
      }
 
      public void formulaToLEft(){
@@ -124,9 +127,11 @@ public class LogicCalculatorController {
           activateOperations();
      }
 
-     public void addNewVariable(){
+     public void addNewVariable() {
           String newVariableName = newVariable.getText();
-          model.addFormula(new LogicVariable(newVariableName));
+          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.VAR,0,0,newVariableName);
+          model.addFormulaOfType(signature);
+          //model.addFormula(new LogicVariable(newVariableName));
           formulaListReset();
           newVariable.clear();
      }
@@ -150,20 +155,26 @@ public class LogicCalculatorController {
      // todo: exception handling for empty subformulas.
      // toto: maybe put these into interface?
      public void makeConjunction(){
-          LogicFormula toAdd = new LogicConjunction(model.getFormula(leftIndex),model.getFormula(rightIndex));
-          model.addFormula(toAdd);
+          //LogicFormula toAdd = new LogicConjunction(model.getFormula(leftIndex),model.getFormula(rightIndex));
+          //model.addFormula(toAdd);
+          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.CON,leftIndex,rightIndex,"");
+          model.addFormulaOfType(signature);
           formulaListReset();
      }
 
      public void makeDisjunction(){
-          LogicFormula toAdd = new LogicDisjunction(model.getFormula(leftIndex),model.getFormula(rightIndex));
-          model.addFormula(toAdd);
+          //LogicFormula toAdd = new LogicDisjunction(model.getFormula(leftIndex),model.getFormula(rightIndex));
+          //model.addFormula(toAdd);
+          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.DIS,leftIndex,rightIndex,"");
+          model.addFormulaOfType(signature);
           formulaListReset();
      }
 
      public void makeNegation(){
-          LogicFormula toAdd = new LogicNegation(model.getFormula(leftIndex));
-          model.addFormula(toAdd);
+          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.NEG,leftIndex,0,"");
+          //LogicFormula toAdd = new LogicNegation(model.getFormula(leftIndex));
+          model.addFormulaOfType(signature);
+          //model.addFormula(toAdd);
           formulaListReset();
      }
 

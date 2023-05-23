@@ -1,11 +1,5 @@
 package controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import javafx.beans.Observable;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableStringValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,7 +8,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
-import jdk.dynalink.CallSiteDescriptor;
 import model.*;
 
 import java.io.File;
@@ -78,9 +71,16 @@ public class LogicCalculatorController {
           tableView.setEditable(true);
           valueColumn.setCellFactory(TextFieldTableCell.forTableColumn());
           //model.read();
-          model.readLog();
-          formulaListReset();
 
+          //formulaListReset();
+     }
+
+     //////   File handling
+
+     @FXML
+     private void onNew(){
+          model.clearFormulas();
+          formulaListReset();
      }
 
      @FXML
@@ -92,12 +92,46 @@ public class LogicCalculatorController {
                //Logger.debug("Opening file {}", file);
                try {
                     model.open(file.getPath());
+                    formulaListReset();
                } catch (IOException e) {
                     //Logger.error("Failed to open file");
                }
           }
      }
 
+     @FXML
+     private void onSave(ActionEvent event) {
+          if (model.getFilePath() != null) {
+               //Logger.debug("Saving file");
+               try {
+                    model.save();
+               } catch (IOException e) {
+                    //Logger.error(e, "Failed to save file");
+               }
+          } else {
+               performSaveAs();
+          }
+     }
+
+     @FXML
+     private void onSaveAs(ActionEvent event) {
+          performSaveAs();
+     }
+
+     private void performSaveAs() {
+          FileChooser fileChooser = new FileChooser();
+          fileChooser.setTitle("Save As");
+          File file = fileChooser.showSaveDialog(null);
+          if (file != null) {
+               //Logger.debug("Saving file as {}", file);
+               try {
+                    model.saveAs(file.getPath());
+               } catch (IOException e) {
+                    //Logger.error(e, "Failed to save file");
+               }
+          }
+     }
+     //////   Hangling formulas
      public void selectFormula(){
           calculateButton.setDisable(false);
           addLeftFormulaButton.setDisable(false);
@@ -105,11 +139,13 @@ public class LogicCalculatorController {
           lastSelected = formulaList.getSelectionModel().getSelectedIndex();
      }
 
+
+
      public void calculateResult() throws IOException {
           String answer = String.valueOf(model.getFormula(lastSelected).evaluate());
           resultLabel.setText(answer);
           //model.toJsonTest();
-          model.saveLog();
+          //model.saveLog();
      }
 
      public void formulaToLEft(){
@@ -143,7 +179,7 @@ public class LogicCalculatorController {
           int index = 0;
           for (LogicFormula form : model.getFormulas())
           {
-               if (form.getClass() == LogicVariable.class)
+               if (form.getClass() == Variable.class)
                {
                     String value = form.isCurrentValue() ? "1" : "0";
                     variablesToTable.add(new variableData(form.getSymbol(),value,index));
@@ -152,19 +188,13 @@ public class LogicCalculatorController {
           }
      }
 
-     // todo: exception handling for empty subformulas.
-     // toto: maybe put these into interface?
      public void makeConjunction(){
-          //LogicFormula toAdd = new LogicConjunction(model.getFormula(leftIndex),model.getFormula(rightIndex));
-          //model.addFormula(toAdd);
           LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.CON,leftIndex,rightIndex,"");
           model.addFormulaOfType(signature);
           formulaListReset();
      }
 
      public void makeDisjunction(){
-          //LogicFormula toAdd = new LogicDisjunction(model.getFormula(leftIndex),model.getFormula(rightIndex));
-          //model.addFormula(toAdd);
           LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.DIS,leftIndex,rightIndex,"");
           model.addFormulaOfType(signature);
           formulaListReset();
@@ -172,9 +202,7 @@ public class LogicCalculatorController {
 
      public void makeNegation(){
           LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.NEG,leftIndex,0,"");
-          //LogicFormula toAdd = new LogicNegation(model.getFormula(leftIndex));
           model.addFormulaOfType(signature);
-          //model.addFormula(toAdd);
           formulaListReset();
      }
 

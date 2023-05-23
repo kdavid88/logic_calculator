@@ -1,20 +1,20 @@
 package model;
 
-public class LogicVariable extends LogicFormula{
+public class Variable extends LogicFormula{
 
     @Override
     public boolean evaluate() {
         return super.isCurrentValue();
     }
 
-    public LogicVariable(String name)
+    public Variable(String name)
     {
         super(name);
         // default value of variables is false;
         this.setCurrentValue(false);
     }
 
-    public LogicVariable() {
+    public Variable() {
         super();
     }
 

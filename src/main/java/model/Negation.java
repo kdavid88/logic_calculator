@@ -1,7 +1,7 @@
 package model;
 
-public class LogicNegation extends LogicFormula{
-    public LogicNegation(LogicFormula sub){
+public class Negation extends LogicFormula{
+    public Negation(LogicFormula sub){
         super("¬");
         rightSubFormula = sub;
     }
@@ -11,7 +11,7 @@ public class LogicNegation extends LogicFormula{
         return !rightSubFormula.evaluate();
     }
 
-    public LogicNegation() {
+    public Negation() {
         super();
     }
 

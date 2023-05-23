@@ -1,4 +1,5 @@
 package model;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import javafx.beans.property.SimpleStringProperty;
@@ -6,10 +7,7 @@ import javafx.beans.property.StringProperty;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.Normalizer;
 import java.util.Arrays;
-//import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
-//import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 
 
 import java.io.FileReader;
@@ -18,7 +16,6 @@ import java.io.IOException;
 import java.util.Vector;
 
 public class LogicCalculatorModel {
-    //  should be private?
     private Vector<LogicFormula> Formulas = new Vector<LogicFormula>();
     private Vector<LogicFormulaSignature> Log = new Vector<LogicFormulaSignature>();
     ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
@@ -35,17 +32,33 @@ public class LogicCalculatorModel {
     public void setFilePath(String filePath) {
         this.filePath.set(filePath);
     }
-// todo evaluation doesnt work on loadad compound formulas.
     public void open(String filePath) throws IOException {
         var s = Files.readString(Path.of(filePath));
         this.filePath.set(filePath);
-        LogicFormula[] formulasRead = objectMapper.readValue(new FileReader(filePath), LogicFormula[].class);
-        Formulas.clear();
-        for (LogicFormula formula : formulasRead)
-        {
-            Formulas.add(formula);
+        LogicFormulaSignature[] formulasRead = objectMapper.readValue(new FileReader(filePath), LogicFormulaSignature[].class);
+        for (LogicFormulaSignature signature : formulasRead) {
+            addFormulaOfType(signature);
         }
+        //modified.set(false);
+    }
 
+    public void clearFormulas(){
+        Formulas.clear();
+        Log.clear();
+    }
+    public void save() throws IOException {
+        if (filePath.get() == null) {
+            throw new IllegalStateException();
+        }
+        saveAs(filePath.get());
+    }
+
+    public void saveAs(String filePath) throws IOException {
+        String toWrite = null;
+        var writer = new FileWriter(filePath);
+        objectMapper.writeValue(writer, Log);
+        //Files.writeString(Path.of(filePath), content.get());
+        this.filePath.set(filePath);
         //modified.set(false);
     }
 
@@ -59,27 +72,21 @@ public class LogicCalculatorModel {
     }
 
     public void saveLog() throws IOException {
-        //Could not make type annotation work with Vector, had to convert to array
-        //LogicFormula[] formulasToSave = new LogicFormula[Formulas.size()];
-        //Formulas.toArray(formulasToSave);
         try (var writer = new FileWriter("log.json")) {
             objectMapper.writeValue(writer, Log);
         }
     }
 
     public void read() throws IOException {
-
         LogicFormula[] formulasRead = objectMapper.readValue(new FileReader("filename.json"), LogicFormula[].class);
         Formulas = new Vector<LogicFormula>(Arrays.asList(formulasRead));
     }
 
     public void readLog() throws IOException {
-
         LogicFormulaSignature[] formulasRead = objectMapper.readValue(new FileReader("log.json"), LogicFormulaSignature[].class);
-        //Log = new Vector<LogicFormulaSignature>(Arrays.asList(formulasRead));
         for (LogicFormulaSignature signature : formulasRead) {
-            addFormulaOfType(signature);  }
-
+            addFormulaOfType(signature);
+        }
     }
 
     public LogicFormula getFormula(int index){
@@ -92,10 +99,10 @@ public class LogicCalculatorModel {
 
     public void addFormulaOfType(LogicFormulaSignature signature){
         switch (signature.type()) {
-            case VAR -> Formulas.add(new LogicVariable(signature.label()));
-            case NEG -> Formulas.add(new LogicNegation(Formulas.get(signature.leftSubFormulaIndex())));
-            case CON -> Formulas.add(new LogicConjunction(Formulas.get(signature.leftSubFormulaIndex()),Formulas.get(signature.rightSubFormulaIndex())));
-            case DIS -> Formulas.add(new LogicDisjunction(Formulas.get(signature.leftSubFormulaIndex()),Formulas.get(signature.rightSubFormulaIndex())));
+            case VAR -> Formulas.add(new Variable(signature.label()));
+            case NEG -> Formulas.add(new Negation(Formulas.get(signature.leftSubFormulaIndex())));
+            case CON -> Formulas.add(new Conjunction(Formulas.get(signature.leftSubFormulaIndex()),Formulas.get(signature.rightSubFormulaIndex())));
+            case DIS -> Formulas.add(new Disjunction(Formulas.get(signature.leftSubFormulaIndex()),Formulas.get(signature.rightSubFormulaIndex())));
         }
         Log.add(signature);
     }
@@ -103,14 +110,4 @@ public class LogicCalculatorModel {
     public Vector<LogicFormula> getFormulas(){
         return Formulas;
     }
-
-
-
-
-
-
-
-
-
-
 }

@@ -50,7 +50,7 @@ public class LogicFormulaSignature {
     public void setLabel(String label) {
         this.label = label;
     }
-
+    @SuppressWarnings("unused")
     public LogicFormulaSignature() {
     }
 

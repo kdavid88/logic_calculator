@@ -67,7 +67,7 @@ public class LogicCalculatorModel {
     public void export(String filePath) throws IOException {
         var writer = new FileWriter(filePath);
         objectMapper.writeValue(writer, Formulas.get(lastSelected));
-        //This could expot the entire vector of formulas. Could not make type annotation work with Vector, had to convert to array
+        //This could export the entire vector of formulas. Could not make type annotation work with Vector, had to convert to array
         //LogicFormula[] formulasToSave = new LogicFormula[Formulas.size()];
         //Formulas.toArray(formulasToSave);
     }

@@ -1,12 +1,10 @@
 package controller;
 
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class variableData {
-    private SimpleStringProperty name,value;
-    int index;
+    final private SimpleStringProperty name,value;
+    final int index;
 
     public variableData(String name, String value, int index) {
         this.name = new SimpleStringProperty(name);

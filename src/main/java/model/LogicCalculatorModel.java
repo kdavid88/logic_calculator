@@ -2,13 +2,9 @@ package model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -18,7 +14,7 @@ import java.util.Vector;
 public class LogicCalculatorModel {
     final private Vector<LogicFormula> Formulas = new Vector<>();
     final private Vector<LogicFormulaSignature> formulasLog = new Vector<>();
-    ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+    final ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private final StringProperty filePath = new SimpleStringProperty(null);
 
     // Selection control
@@ -79,15 +75,6 @@ public class LogicCalculatorModel {
         Formulas = new Vector<LogicFormula>(Arrays.asList(formulasRead));
     }
     */
-    public LogicFormula getFormula(int index){
-        return Formulas.get(index);
-    }
-
-    /*
-    public void addFormula(LogicFormula formula){
-        Formulas.add(formula);
-    }
-    */
 
     public void addFormulaOfType(LogicFormulaSignature signature){
         switch (signature.getType()) {
@@ -112,9 +99,6 @@ public class LogicCalculatorModel {
         return Formulas.get(lastSelected);
     }
 
-    public int getLastSelected() {
-        return lastSelected;
-    }
 
     public void setLastSelected(int lastSelected) {
         this.lastSelected = lastSelected;

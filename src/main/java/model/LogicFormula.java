@@ -26,23 +26,6 @@ public abstract class LogicFormula {
 
     public void setCurrentValue(boolean currentValue) {
         this.currentValue = currentValue;
-
-    }
-
-    public LogicFormula getLeftSubFormula() {
-        return leftSubFormula;
-    }
-
-    public void setLeftSubFormula(LogicFormula leftSubFormula) {
-        this.leftSubFormula = leftSubFormula;
-    }
-
-    public LogicFormula getRightSubFormula() {
-        return rightSubFormula;
-    }
-
-    public void setRightSubFormula(LogicFormula rightSubFormula) {
-        this.rightSubFormula = rightSubFormula;
     }
 
     @Override

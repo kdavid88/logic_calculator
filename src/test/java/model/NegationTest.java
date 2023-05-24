@@ -5,14 +5,14 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NegationTest {
-    Variable x = new Variable("x",true);
-    Negation negx = new Negation(x);
-    Negation negnegx = new Negation(negx);
+    final Variable x = new Variable("x",true);
+    final Negation negX = new Negation(x);
+    final Negation negNegX = new Negation(negX);
 
 
     @Test
     void testEvaluate() {
-        assertFalse(negx.evaluate());
-        assertTrue(negnegx.evaluate());
+        assertFalse(negX.evaluate());
+        assertTrue(negNegX.evaluate());
     }
 }

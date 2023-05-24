@@ -94,7 +94,7 @@
             <Button layoutX="162.0" layoutY="20.0" mnemonicParsing="false" onAction="#addNewVariable" text="Add variable" />
             <TextField fx:id="newVariable" layoutX="290.0" layoutY="20.0" prefHeight="24.0" prefWidth="52.0" />
             <Button fx:id="addRightFormulaButton" layoutX="427.0" layoutY="201.0" mnemonicParsing="false" onAction="#formulaToRight" prefHeight="24.0" prefWidth="140.0" text="Add Right formula" />
-            <Label fx:id="righFormulaLabel" layoutX="667.0" layoutY="205.0" prefHeight="16.0" prefWidth="125.0" text="right formula" />
+            <Label fx:id="rightFormulaLabel" layoutX="667.0" layoutY="205.0" prefHeight="16.0" prefWidth="125.0" text="right formula" />
             <Label layoutX="580.0" layoutY="64.0" text="Select operation" />
             <Button fx:id="makeConjButton" layoutX="629.0" layoutY="152.0" mnemonicParsing="false" onAction="#makeConjunction" text="∧" />
             <Button fx:id="makeDisjButton" layoutX="580.0" layoutY="152.0" mnemonicParsing="false" onAction="#makeDisjunction" text="∨" />

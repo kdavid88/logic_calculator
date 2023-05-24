@@ -33,7 +33,7 @@ public class LogicCalculatorController {
      @FXML
      private ListView<LogicFormula> formulaList;
      @FXML
-     private Label leftFormulaLabel, righFormulaLabel, resultLabel;
+     private Label leftFormulaLabel, rightFormulaLabel, resultLabel;
      @FXML
      private MenuItem exportMenuItem;
      @FXML
@@ -166,7 +166,7 @@ public class LogicCalculatorController {
      }
      public void formulaToRight(){
           String rightFormula = formulaList.getSelectionModel().getSelectedItem().toString();
-          righFormulaLabel.setText(rightFormula);
+          rightFormulaLabel.setText(rightFormula);
           model.setRightIndex(formulaList.getSelectionModel().getSelectedIndex());
           rightAdded = true;
           activateOperations();

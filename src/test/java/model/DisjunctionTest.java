@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DisjunctionTest {
-    Variable trueVar = new Variable("x",true);
-    Variable falseVar = new Variable("y",false);
-    Disjunction disjunction11 = new Disjunction(trueVar,trueVar);
-    Disjunction disjunction10 = new Disjunction(trueVar,falseVar);
-    Disjunction disjunction00 = new Disjunction(falseVar,falseVar);
+    final Variable trueVar = new Variable("x",true);
+    final Variable falseVar = new Variable("y",false);
+    final Disjunction disjunction11 = new Disjunction(trueVar,trueVar);
+    final Disjunction disjunction10 = new Disjunction(trueVar,falseVar);
+    final Disjunction disjunction00 = new Disjunction(falseVar,falseVar);
 
     @Test
     void evaluate() {

@@ -21,6 +21,9 @@ public class LogicCalculatorModel {
     ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private final StringProperty filePath = new SimpleStringProperty(null);
 
+    // Selection control
+    private int lastSelected, leftIndex, rightIndex;
+
     public String getFilePath() {
         return filePath.get();
     }
@@ -61,9 +64,9 @@ public class LogicCalculatorModel {
     }
 
     // This exports a single formula with the entire tree.
-    public void export(String filePath, int index) throws IOException {
+    public void export(String filePath) throws IOException {
         var writer = new FileWriter(filePath);
-        objectMapper.writeValue(writer, Formulas.get(index));
+        objectMapper.writeValue(writer, Formulas.get(lastSelected));
         //This could expot the entire vector of formulas. Could not make type annotation work with Vector, had to convert to array
         //LogicFormula[] formulasToSave = new LogicFormula[Formulas.size()];
         //Formulas.toArray(formulasToSave);
@@ -87,16 +90,49 @@ public class LogicCalculatorModel {
     */
 
     public void addFormulaOfType(LogicFormulaSignature signature){
-        switch (signature.type()) {
-            case VAR -> Formulas.add(new Variable(signature.label(),signature.value()));
-            case NEG -> Formulas.add(new Negation(Formulas.get(signature.leftSubFormulaIndex())));
-            case CON -> Formulas.add(new Conjunction(Formulas.get(signature.leftSubFormulaIndex()),Formulas.get(signature.rightSubFormulaIndex())));
-            case DIS -> Formulas.add(new Disjunction(Formulas.get(signature.leftSubFormulaIndex()),Formulas.get(signature.rightSubFormulaIndex())));
+        switch (signature.getType()) {
+            case VAR -> Formulas.add(new Variable(signature.getLabel(),signature.isValue()));
+            case NEG -> Formulas.add(new Negation(Formulas.get(signature.getLeftSubFormulaIndex())));
+            case CON -> Formulas.add(new Conjunction(Formulas.get(signature.getLeftSubFormulaIndex()),Formulas.get(signature.getRightSubFormulaIndex())));
+            case DIS -> Formulas.add(new Disjunction(Formulas.get(signature.getLeftSubFormulaIndex()),Formulas.get(signature.getRightSubFormulaIndex())));
         }
         formulasLog.add(signature);
     }
 
-    public Vector<LogicFormula> getFormulas(){
+    public void setVariableValue(int index, boolean newValue) {
+        Formulas.get(index).setCurrentValue(newValue);
+        formulasLog.get(index).setValue(newValue);
+    }
+
+    public Vector<LogicFormula> getFormulas() {
         return Formulas;
+    }
+
+    public LogicFormula getSelectedFormula() {
+        return Formulas.get(lastSelected);
+    }
+
+    public int getLastSelected() {
+        return lastSelected;
+    }
+
+    public void setLastSelected(int lastSelected) {
+        this.lastSelected = lastSelected;
+    }
+
+    public int getLeftIndex() {
+        return leftIndex;
+    }
+
+    public void setLeftIndex(int leftIndex) {
+        this.leftIndex = leftIndex;
+    }
+
+    public int getRightIndex() {
+        return rightIndex;
+    }
+
+    public void setRightIndex(int rightIndex) {
+        this.rightIndex = rightIndex;
     }
 }

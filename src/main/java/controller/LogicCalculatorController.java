@@ -16,14 +16,9 @@ import java.io.IOException;
 
 public class LogicCalculatorController {
      private final LogicCalculatorModel model = new LogicCalculatorModel();
-
-     // Should these be in the model?
-     private int lastSelected ;
-
-     private int leftIndex, rightIndex;
      private boolean leftAdded = false , rightAdded = false;
 
-     // Probably would be better with listeners but it gets the job done.
+     // Probably would be better with listeners, but it gets the job done.
      private void activateOperations()
      {
           if (leftAdded) {
@@ -66,8 +61,8 @@ public class LogicCalculatorController {
           exportMenuItem.setDisable(true);
 
           //Setting up table for variables
-          nameColumn.setCellValueFactory(new PropertyValueFactory<variableData,String>("name"));
-          valueColumn.setCellValueFactory(new PropertyValueFactory<variableData,String>("value"));
+          nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+          valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
           tableView.setItems(variablesToTable);
           tableView.setEditable(true);
           valueColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -81,6 +76,7 @@ public class LogicCalculatorController {
           formulaListReset();
      }
 
+     // todo logger?
      @FXML
      private void onOpen() {
           FileChooser fileChooser = new FileChooser();
@@ -138,40 +134,40 @@ public class LogicCalculatorController {
           if (file != null) {
                //Logger.debug("Saving file as {}", file);
                try {
-                    model.export(file.getPath(),lastSelected);
+                    model.export(file.getPath());
                } catch (IOException e) {
                     //Logger.error(e, "Failed to save file");
                }
           }
 
      }
-     //////   Hangling formulas
+     //////   Handling formulas
      public void selectFormula(){
           calculateButton.setDisable(false);
           addLeftFormulaButton.setDisable(false);
           addRightFormulaButton.setDisable(false);
-          lastSelected = formulaList.getSelectionModel().getSelectedIndex();
+          model.setLastSelected(formulaList.getSelectionModel().getSelectedIndex());
           exportMenuItem.setDisable(false);
      }
 
 
 
      public void calculateResult() {
-          String answer = String.valueOf(model.getFormula(lastSelected).evaluate());
+          String answer = String.valueOf(model.getSelectedFormula().evaluate());
           resultLabel.setText(answer);
      }
 
      public void formulaToLEft(){
           String leftFormula = formulaList.getSelectionModel().getSelectedItem().toString();
           leftFormulaLabel.setText(leftFormula);
-          leftIndex = formulaList.getSelectionModel().getSelectedIndex();
+          model.setLeftIndex(formulaList.getSelectionModel().getSelectedIndex());
           leftAdded = true;
           activateOperations();
      }
      public void formulaToRight(){
           String rightFormula = formulaList.getSelectionModel().getSelectedItem().toString();
           righFormulaLabel.setText(rightFormula);
-          rightIndex = formulaList.getSelectionModel().getSelectedIndex();
+          model.setRightIndex(formulaList.getSelectionModel().getSelectedIndex());
           rightAdded = true;
           activateOperations();
      }
@@ -201,28 +197,29 @@ public class LogicCalculatorController {
      }
 
      public void makeConjunction(){
-          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.CON,leftIndex,rightIndex,"",false);
+          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.CON, model.getLeftIndex(), model.getRightIndex(),"",false);
           model.addFormulaOfType(signature);
           formulaListReset();
      }
 
      public void makeDisjunction(){
-          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.DIS,leftIndex,rightIndex,"",false);
+          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.DIS,model.getLeftIndex(),model.getRightIndex(),"",false);
           model.addFormulaOfType(signature);
           formulaListReset();
      }
 
      public void makeNegation(){
-          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.NEG,leftIndex,0,"",false);
+          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.NEG,model.getLeftIndex(),0,"",false);
           model.addFormulaOfType(signature);
           formulaListReset();
      }
 
-     // Commented lines would refresh tableview, but we relaod it from Formulas
-     public void changeVarEvent(TableColumn.CellEditEvent editedCell){
+     // Commented lines would refresh tableview, but we reload it from Formulas
+     public void changeVarEvent(TableColumn.CellEditEvent<variableData,String> editedCell){
           variableData varSelected = tableView.getSelectionModel().getSelectedItem();
-          boolean newValue = !(editedCell.getNewValue().toString().equals("0"));
-          model.getFormula(varSelected.index).setCurrentValue(newValue);
+          boolean newValue = !(editedCell.getNewValue().equals("0"));
+          model.setVariableValue(varSelected.index,newValue);
+          //model.getFormula(varSelected.index).setCurrentValue(newValue);
           tableView.refresh();
           formulaListReset();
      }

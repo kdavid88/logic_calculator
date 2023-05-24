@@ -10,10 +10,4 @@ public class Negation extends LogicFormula{
     public boolean evaluate() {
         return !rightSubFormula.evaluate();
     }
-
-    public Negation() {
-        super();
-    }
-
-
 }

@@ -7,7 +7,7 @@ import javafx.beans.property.StringProperty;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
+
 
 
 import java.io.FileReader;
@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.Vector;
 
 public class LogicCalculatorModel {
-    private Vector<LogicFormula> Formulas = new Vector<LogicFormula>();
-    private Vector<LogicFormulaSignature> Log = new Vector<LogicFormulaSignature>();
+    final private Vector<LogicFormula> Formulas = new Vector<>();
+    final private Vector<LogicFormulaSignature> formulasLog = new Vector<>();
     ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private final StringProperty filePath = new SimpleStringProperty(null);
 
@@ -33,7 +33,6 @@ public class LogicCalculatorModel {
         this.filePath.set(filePath);
     }
     public void open(String filePath) throws IOException {
-        var s = Files.readString(Path.of(filePath));
         this.filePath.set(filePath);
         LogicFormulaSignature[] formulasRead = objectMapper.readValue(new FileReader(filePath), LogicFormulaSignature[].class);
         for (LogicFormulaSignature signature : formulasRead) {
@@ -44,7 +43,7 @@ public class LogicCalculatorModel {
 
     public void clearFormulas(){
         Formulas.clear();
-        Log.clear();
+        formulasLog.clear();
     }
     public void save() throws IOException {
         if (filePath.get() == null) {
@@ -55,7 +54,7 @@ public class LogicCalculatorModel {
 
     public void saveAs(String filePath) throws IOException {
         var writer = new FileWriter(filePath);
-        objectMapper.writeValue(writer, Log);
+        objectMapper.writeValue(writer, formulasLog);
         //Files.writeString(Path.of(filePath), content.get());
         this.filePath.set(filePath);
         //modified.set(false);
@@ -81,18 +80,20 @@ public class LogicCalculatorModel {
         return Formulas.get(index);
     }
 
+    /*
     public void addFormula(LogicFormula formula){
         Formulas.add(formula);
     }
+    */
 
     public void addFormulaOfType(LogicFormulaSignature signature){
         switch (signature.type()) {
-            case VAR -> Formulas.add(new Variable(signature.label()));
+            case VAR -> Formulas.add(new Variable(signature.label(),signature.value()));
             case NEG -> Formulas.add(new Negation(Formulas.get(signature.leftSubFormulaIndex())));
             case CON -> Formulas.add(new Conjunction(Formulas.get(signature.leftSubFormulaIndex()),Formulas.get(signature.rightSubFormulaIndex())));
             case DIS -> Formulas.add(new Disjunction(Formulas.get(signature.leftSubFormulaIndex()),Formulas.get(signature.rightSubFormulaIndex())));
         }
-        Log.add(signature);
+        formulasLog.add(signature);
     }
 
     public Vector<LogicFormula> getFormulas(){

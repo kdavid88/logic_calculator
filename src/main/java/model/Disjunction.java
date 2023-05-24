@@ -15,9 +15,4 @@ public class Disjunction extends LogicFormula{
     public String toString() {
         return '(' + super.toString() + ')';
     }
-
-    public Disjunction() {
-        super();
-    }
-
 }

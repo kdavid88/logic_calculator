@@ -7,15 +7,10 @@ public class Variable extends LogicFormula{
         return super.isCurrentValue();
     }
 
-    public Variable(String name)
+    public Variable(String name, boolean value)
     {
         super(name);
         // default value of variables is false;
-        this.setCurrentValue(false);
+        this.setCurrentValue(value);
     }
-
-    public Variable() {
-        super();
-    }
-
 }

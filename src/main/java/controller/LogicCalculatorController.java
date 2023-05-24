@@ -36,7 +36,7 @@ public class LogicCalculatorController {
      }
 
      @FXML
-     private ListView formulaList;
+     private ListView<LogicFormula> formulaList;
      @FXML
      private Label leftFormulaLabel, righFormulaLabel, resultLabel;
      @FXML
@@ -52,10 +52,10 @@ public class LogicCalculatorController {
      @FXML
      private TableColumn<variableData,String> valueColumn;
 
-     private ObservableList<variableData> variablesToTable = FXCollections.observableArrayList();
+     final private ObservableList<variableData> variablesToTable = FXCollections.observableArrayList();
 
      @FXML
-     public void initialize() throws IOException {
+     public void initialize() {
           // Disabling buttons
           calculateButton.setDisable(true);
           addLeftFormulaButton.setDisable(true);
@@ -82,7 +82,7 @@ public class LogicCalculatorController {
      }
 
      @FXML
-     private void onOpen(ActionEvent event) {
+     private void onOpen() {
           FileChooser fileChooser = new FileChooser();
           fileChooser.setTitle("Open");
           File file = fileChooser.showOpenDialog(null);
@@ -98,7 +98,7 @@ public class LogicCalculatorController {
      }
 
      @FXML
-     private void onSave(ActionEvent event) {
+     private void onSave() {
           if (model.getFilePath() != null) {
                //Logger.debug("Saving file");
                try {
@@ -112,7 +112,7 @@ public class LogicCalculatorController {
      }
 
      @FXML
-     private void onSaveAs(ActionEvent event) {
+     private void onSaveAs() {
           performSaveAs();
      }
 
@@ -156,7 +156,7 @@ public class LogicCalculatorController {
 
 
 
-     public void calculateResult() throws IOException {
+     public void calculateResult() {
           String answer = String.valueOf(model.getFormula(lastSelected).evaluate());
           resultLabel.setText(answer);
      }
@@ -178,7 +178,7 @@ public class LogicCalculatorController {
 
      public void addNewVariable() {
           String newVariableName = newVariable.getText();
-          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.VAR,0,0,newVariableName);
+          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.VAR,0,0,newVariableName,false);
           model.addFormulaOfType(signature);
           formulaListReset();
           newVariable.clear();
@@ -201,39 +201,27 @@ public class LogicCalculatorController {
      }
 
      public void makeConjunction(){
-          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.CON,leftIndex,rightIndex,"");
+          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.CON,leftIndex,rightIndex,"",false);
           model.addFormulaOfType(signature);
           formulaListReset();
      }
 
      public void makeDisjunction(){
-          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.DIS,leftIndex,rightIndex,"");
+          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.DIS,leftIndex,rightIndex,"",false);
           model.addFormulaOfType(signature);
           formulaListReset();
      }
 
      public void makeNegation(){
-          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.NEG,leftIndex,0,"");
+          LogicFormulaSignature signature = new LogicFormulaSignature(FormulaType.NEG,leftIndex,0,"",false);
           model.addFormulaOfType(signature);
           formulaListReset();
      }
 
      // Commented lines would refresh tableview, but we relaod it from Formulas
-     // Todo clean this up.
      public void changeVarEvent(TableColumn.CellEditEvent editedCell){
           variableData varSelected = tableView.getSelectionModel().getSelectedItem();
-          //int index = editedCell.getTablePosition().getRow();
-          Boolean newValue;
-          //String newValueString;
-          if (editedCell.getNewValue().toString().equals("0")){
-               newValue = false;
-               //newValueString = "0";
-          }
-          else {
-               newValue = true;
-               //newValueString = "1";
-          }
-          //varSelected.setValue(newValueString);
+          boolean newValue = !(editedCell.getNewValue().toString().equals("0"));
           model.getFormula(varSelected.index).setCurrentValue(newValue);
           tableView.refresh();
           formulaListReset();

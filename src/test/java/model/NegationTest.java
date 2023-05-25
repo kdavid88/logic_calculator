@@ -11,10 +11,17 @@ class NegationTest {
     final Negation invalidNeg = new Negation(null);
 
     @Test
-    void testEvaluate() {
+    void testEvaluate_caseFalse() {
         assertFalse(negX.evaluate());
+
+    }
+    @Test
+    void testEvaluate_caseTrue() {
         assertTrue(negNegX.evaluate());
-        assertThrows(MissingArgumentException.class, ()->invalidNeg.evaluate());
+    }
+    @Test
+    void testEvaluate_caseNull() {
+        assertThrows(MissingArgumentException.class, invalidNeg::evaluate);
     }
 
 }

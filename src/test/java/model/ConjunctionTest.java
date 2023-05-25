@@ -15,12 +15,27 @@ class ConjunctionTest {
     final Conjunction invalidConjunctionBoth = new Conjunction(null,null);
 
     @Test
-    void TestEvaluate() {
+    void TestEvaluate_caseTrueTrue() {
         assertTrue(conjunction11.evaluate());
+    }
+    @Test
+    void TestEvaluate_caseTrueFalse() {
         assertFalse(conjunction10.evaluate());
+    }
+    @Test
+    void TestEvaluate_caseFalseFalse() {
         assertFalse(conjunction00.evaluate());
-        assertThrows(MissingArgumentException.class, ()->invalidConjunctionLeft.evaluate());
-        assertThrows(MissingArgumentException.class, ()->invalidConjunctionRight.evaluate());
-        assertThrows(MissingArgumentException.class, ()->invalidConjunctionBoth.evaluate());
+    }
+    @Test
+    void TestEvaluate_leftNull() {
+        assertThrows(MissingArgumentException.class, invalidConjunctionLeft::evaluate);
+    }
+    @Test
+    void TestEvaluate_rightNull() {
+        assertThrows(MissingArgumentException.class, invalidConjunctionRight::evaluate);
+    }
+    @Test
+    void TestEvaluate_bothNull() {
+        assertThrows(MissingArgumentException.class, invalidConjunctionBoth::evaluate);
     }
 }

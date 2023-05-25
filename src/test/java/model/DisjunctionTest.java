@@ -15,12 +15,29 @@ class DisjunctionTest {
     final Disjunction invalidDisjunctionBoth = new Disjunction(null,null);
 
     @Test
-    void evaluate() {
+    void TestEvaluate_caseTrueTrue() {
         assertTrue(disjunction11.evaluate());
-        assertTrue(disjunction10.evaluate());
-        assertFalse(disjunction00.evaluate());
-        assertThrows(MissingArgumentException.class, ()->invalidDisjunctionLeft.evaluate());
-        assertThrows(MissingArgumentException.class, ()->invalidDisjunctionRight.evaluate());
-        assertThrows(MissingArgumentException.class, ()->invalidDisjunctionBoth.evaluate());
     }
+    @Test
+    void TestEvaluate_caseTrueFalse() {
+        assertTrue(disjunction10.evaluate());
+    }
+    @Test
+    void TestEvaluate_caseFalseFalse() {
+        assertFalse(disjunction00.evaluate());
+    }
+    @Test
+    void TestEvaluate_leftNull() {
+        assertThrows(MissingArgumentException.class, invalidDisjunctionLeft::evaluate);
+    }
+    @Test
+    void TestEvaluate_rightNull() {
+        assertThrows(MissingArgumentException.class, invalidDisjunctionRight::evaluate);
+    }
+    @Test
+    void TestEvaluate_bothNull() {
+        assertThrows(MissingArgumentException.class, invalidDisjunctionBoth::evaluate);
+    }
+    
+    
 }

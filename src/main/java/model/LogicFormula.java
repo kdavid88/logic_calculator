@@ -37,6 +37,14 @@ public abstract class LogicFormula {
 
     public abstract boolean evaluate();
 
+    public LogicFormula getLeftSubFormula() {
+        return leftSubFormula;
+    }
+
+    public LogicFormula getRightSubFormula() {
+        return rightSubFormula;
+    }
+
     public LogicFormula() {
     }
 }

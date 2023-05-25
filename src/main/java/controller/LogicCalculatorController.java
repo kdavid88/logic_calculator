@@ -49,6 +49,7 @@ public class LogicCalculatorController {
 
      final private ObservableList<variableData> variablesToTable = FXCollections.observableArrayList();
 
+     // Disables buttons that can not operate at startup.
      void disableButtons(){
           calculateButton.setDisable(true);
           addLeftFormulaButton.setDisable(true);
@@ -65,9 +66,6 @@ public class LogicCalculatorController {
      @FXML
      public void initialize() {
           disableButtons();
-
-
-
           //Setting up table for variables
           nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
           valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
@@ -159,8 +157,6 @@ public class LogicCalculatorController {
           exportMenuItem.setDisable(false);
      }
 
-
-
      public void calculateResult() {
           String answer = String.valueOf(model.getSelectedFormula().evaluate());
           resultLabel.setText(answer);
@@ -173,6 +169,7 @@ public class LogicCalculatorController {
           leftAdded = true;
           activateOperations();
      }
+
      public void formulaToRight(){
           String rightFormula = formulaList.getSelectionModel().getSelectedItem().toString();
           rightFormulaLabel.setText(rightFormula);
@@ -226,9 +223,9 @@ public class LogicCalculatorController {
      // Commented lines would refresh tableview, but we reload it from Formulas
      public void changeVarEvent(TableColumn.CellEditEvent<variableData,String> editedCell){
           variableData varSelected = tableView.getSelectionModel().getSelectedItem();
+          // Sets the variable to 0 is "0" string is entered, and to 1, if anything else.
           boolean newValue = !(editedCell.getNewValue().equals("0"));
           model.setVariableValue(varSelected.index,newValue);
-          //model.getFormula(varSelected.index).setCurrentValue(newValue);
           tableView.refresh();
           formulaListReset();
      }

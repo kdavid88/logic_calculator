@@ -1,5 +1,6 @@
 package model;
 
+// Stores information about new formulas to add. Used both by the controller and when opening files.
 public class LogicFormulaSignature {
     private FormulaType type;
     private int leftSubFormulaIndex, rightSubFormulaIndex;
@@ -30,17 +31,11 @@ public class LogicFormulaSignature {
         return rightSubFormulaIndex;
     }
 
-    /*
-    public void setRightSubFormulaIndex(int rightSubFormulaIndex) {
-        this.rightSubFormulaIndex = rightSubFormulaIndex;
-    }
-
-     */
-
     public String getLabel() {
         return label;
     }
 
+    // jackson needs this
     @SuppressWarnings("unused")
     public LogicFormulaSignature() {
     }

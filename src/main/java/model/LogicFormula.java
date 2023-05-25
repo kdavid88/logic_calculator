@@ -2,8 +2,6 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-// todo something breaks when serialized as array
-//@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "className")
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public abstract class LogicFormula {
 
@@ -14,11 +12,9 @@ public abstract class LogicFormula {
         return symbol;
     }
 
-
     public LogicFormula(String symbol) {
         this.symbol = symbol;
     }
-
 
     public boolean isCurrentValue() {
         return currentValue;

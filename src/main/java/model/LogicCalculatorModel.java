@@ -24,23 +24,12 @@ public class LogicCalculatorModel {
         return filePath.get();
     }
 
-    /*
-    public StringProperty filePathProperty() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath.set(filePath);
-    }
-
-     */
     public void open(String filePath) throws IOException {
         this.filePath.set(filePath);
         LogicFormulaSignature[] formulasRead = objectMapper.readValue(new FileReader(filePath), LogicFormulaSignature[].class);
         for (LogicFormulaSignature signature : formulasRead) {
             addFormulaOfType(signature);
         }
-        //modified.set(false);
     }
 
     public void clearFormulas(){
@@ -57,9 +46,7 @@ public class LogicCalculatorModel {
     public void saveAs(String filePath) throws IOException {
         var writer = new FileWriter(filePath);
         objectMapper.writeValue(writer, formulasLog);
-        //Files.writeString(Path.of(filePath), content.get());
         this.filePath.set(filePath);
-        //modified.set(false);
     }
 
     // This exports a single formula with the entire tree.
@@ -101,7 +88,6 @@ public class LogicCalculatorModel {
     public LogicFormula getSelectedFormula() {
         return Formulas.get(lastSelected);
     }
-
 
     public void setLastSelected(int lastSelected) {
         this.lastSelected = lastSelected;

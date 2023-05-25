@@ -24,6 +24,7 @@ public class LogicCalculatorModel {
         return filePath.get();
     }
 
+    /*
     public StringProperty filePathProperty() {
         return filePath;
     }
@@ -31,6 +32,8 @@ public class LogicCalculatorModel {
     public void setFilePath(String filePath) {
         this.filePath.set(filePath);
     }
+
+     */
     public void open(String filePath) throws IOException {
         this.filePath.set(filePath);
         LogicFormulaSignature[] formulasRead = objectMapper.readValue(new FileReader(filePath), LogicFormulaSignature[].class);

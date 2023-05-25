@@ -36,15 +36,16 @@ public abstract class LogicFormula {
     }
 
     public abstract boolean evaluate();
-
+   //Jackson needs these
+    @SuppressWarnings("unused")
     public LogicFormula getLeftSubFormula() {
         return leftSubFormula;
     }
-
+    @SuppressWarnings("unused")
     public LogicFormula getRightSubFormula() {
         return rightSubFormula;
     }
-
+    @SuppressWarnings("unused")
     public LogicFormula() {
     }
 }

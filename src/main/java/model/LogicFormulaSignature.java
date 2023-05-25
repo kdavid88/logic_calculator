@@ -30,9 +30,12 @@ public class LogicFormulaSignature {
         return rightSubFormulaIndex;
     }
 
+    /*
     public void setRightSubFormulaIndex(int rightSubFormulaIndex) {
         this.rightSubFormulaIndex = rightSubFormulaIndex;
     }
+
+     */
 
     public String getLabel() {
         return label;

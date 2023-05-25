@@ -2,7 +2,7 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+//import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -49,9 +49,7 @@ public class LogicCalculatorController {
 
      final private ObservableList<variableData> variablesToTable = FXCollections.observableArrayList();
 
-     @FXML
-     public void initialize() {
-          // Disabling buttons
+     void disableButtons(){
           calculateButton.setDisable(true);
           addLeftFormulaButton.setDisable(true);
           addRightFormulaButton.setDisable(true);
@@ -59,6 +57,16 @@ public class LogicCalculatorController {
           makeConjButton.setDisable(true);
           makeDisjButton.setDisable(true);
           exportMenuItem.setDisable(true);
+          leftFormulaLabel.setText("");
+          rightFormulaLabel.setText("");
+          resultLabel.setText("");
+     }
+
+     @FXML
+     public void initialize() {
+          disableButtons();
+
+
 
           //Setting up table for variables
           nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -74,6 +82,7 @@ public class LogicCalculatorController {
      private void onNew(){
           model.clearFormulas();
           formulaListReset();
+          disableButtons();
      }
 
      // todo logger?

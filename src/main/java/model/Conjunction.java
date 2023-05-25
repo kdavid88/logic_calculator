@@ -9,6 +9,7 @@ public class Conjunction extends LogicFormula{
     }
     @Override
     public boolean evaluate() {
+        if (leftSubFormula == null ||rightSubFormula == null) throw new MissingArgumentException();
         return super.leftSubFormula.evaluate() && super.rightSubFormula.evaluate();
     }
     @Override

@@ -41,13 +41,13 @@ public class LogicCalculatorController {
      @FXML
      Button calculateButton, addLeftFormulaButton, addRightFormulaButton, makeNegButton, makeDisjButton, makeConjButton;
      @FXML
-     private TableView<variableData> tableView;
+     private TableView<VariableData> tableView;
      @FXML
-     private TableColumn<variableData,String> nameColumn;
+     private TableColumn<VariableData,String> nameColumn;
      @FXML
-     private TableColumn<variableData,String> valueColumn;
+     private TableColumn<VariableData,String> valueColumn;
 
-     final private ObservableList<variableData> variablesToTable = FXCollections.observableArrayList();
+     final private ObservableList<VariableData> variablesToTable = FXCollections.observableArrayList();
 
      // Disables buttons that can not operate at startup.
      void disableButtons(){
@@ -196,7 +196,7 @@ public class LogicCalculatorController {
                if (form.getClass() == Variable.class)
                {
                     String value = form.isCurrentValue() ? "1" : "0";
-                    variablesToTable.add(new variableData(form.getSymbol(),value,index));
+                    variablesToTable.add(new VariableData(form.getSymbol(),value,index));
                }
                index++;
           }
@@ -221,8 +221,8 @@ public class LogicCalculatorController {
      }
 
      // Commented lines would refresh tableview, but we reload it from Formulas
-     public void changeVarEvent(TableColumn.CellEditEvent<variableData,String> editedCell){
-          variableData varSelected = tableView.getSelectionModel().getSelectedItem();
+     public void changeVarEvent(TableColumn.CellEditEvent<VariableData,String> editedCell){
+          VariableData varSelected = tableView.getSelectionModel().getSelectedItem();
           // Sets the variable to 0 is "0" string is entered, and to 1, if anything else.
           boolean newValue = !(editedCell.getNewValue().equals("0"));
           model.setVariableValue(varSelected.index,newValue);

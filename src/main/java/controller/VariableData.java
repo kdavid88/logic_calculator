@@ -3,11 +3,11 @@ package controller;
 import javafx.beans.property.SimpleStringProperty;
 
 // used in the tableView the edit values of variables.
-public class variableData {
+public class VariableData {
     final private SimpleStringProperty name,value;
     final int index;
 
-    public variableData(String name, String value, int index) {
+    public VariableData(String name, String value, int index) {
         this.name = new SimpleStringProperty(name);
         this.value = new SimpleStringProperty(value);
         this.index = index;

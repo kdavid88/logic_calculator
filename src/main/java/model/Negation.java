@@ -8,6 +8,8 @@ public class Negation extends LogicFormula{
 
     @Override
     public boolean evaluate() {
+        if (rightSubFormula == null) throw new MissingArgumentException();
+
         return !rightSubFormula.evaluate();
     }
 }
